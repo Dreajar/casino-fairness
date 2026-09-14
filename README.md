@@ -22,6 +22,12 @@ Nitro proofs go further: they include signed evidence from AWS about the code th
 
 Passing a check doesn't guarantee a win or a withdrawal.
 
+## Where is the Nitro code?
+
+Our program that runs inside Nitro is in [source/enclave/oracle](source/enclave/oracle). Start with [game-service.ts](source/enclave/oracle/game-service.ts). The [game calculations](source/packages/fairness-core/src) and [Dockerfile used to build the image](source/enclave/Dockerfile) are public too.
+
+The developer guide shows [which files to read](DEVELOPERS.md#where-is-our-nitro-code) and [how to check that this source matches a round's AWS proof](DEVELOPERS.md#how-do-i-check-that-this-code-produced-a-round).
+
 ## Using the code
 
 We've made the code available so people can inspect it and check the proofs. Our [license](LICENSE) allows noncommercial verification, but doesn't allow commercial reuse or use in another casino. Third-party libraries keep their own licenses.

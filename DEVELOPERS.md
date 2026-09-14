@@ -101,7 +101,35 @@ node verify-dice-proof.mjs "/path/to/dice-proof.json" --manifest "/path/to/appro
 
 The manifest must come from the matching Dice demo release. `releases/policy.json` in this package is for the all-game Nitro checker and won't work here. A result marked `local mock` has not passed an AWS hardware check.
 
-## Find the source and build records
+## Where is our Nitro code?
+
+AWS provides Nitro itself. The code here is our program that runs inside it, plus the instructions for building that program into an enclave image.
+
+Start with [game-service.ts](source/enclave/oracle/game-service.ts). It starts the game service and selects the handlers below. You can browse the whole [oracle folder](source/enclave/oracle); “oracle” is just the folder name for the program that produces the game results.
+
+| File or folder | What to look for |
+| --- | --- |
+| [game-proof-oracle.ts](source/enclave/oracle/game-proof-oracle.ts) | Creates the seed commitment, calculates a one-action game such as a slot spin, and signs its result. |
+| [progressive-proof-oracle.ts](source/enclave/oracle/progressive-proof-oracle.ts) | Handles games with several actions and signs the results as the round progresses. |
+| [Game calculations](source/packages/fairness-core/src) | The rules and calculations used to turn the seeds and player actions into results. Some games also import code from other folders under `source/`. |
+| [Rust attestation helper](source/enclave/nsm-attest/src/main.rs) | Asks AWS's Nitro device for the signed document identifying the enclave. |
+| [Dockerfile](source/enclave/Dockerfile) | Lists the files, base images, and system packages included in the enclave image. |
+
+## How do I check that this code produced a round?
+
+There are three pieces to connect: **the source code, the built image, and the round's signed proof**.
+
+1. **Build the JavaScript from the source.** Follow [Build the JavaScript yourself](#build-the-javascript-yourself). `MATCH enclave/game-service.mjs` means your build is identical to the JavaScript program supplied in this release.
+2. **Build the full Nitro image.** Follow [Build the Nitro image](#build-the-nitro-image). Compare its PCR0, PCR1, and PCR2 fingerprints and its image hash with [build-evidence.json](releases/build-evidence.json). This connects the source you inspected to the expected enclave image. Matching the JavaScript alone does not complete this step.
+3. **Check the round's proof.** Follow [Check a Nitro proof](#check-a-nitro-proof). Make sure the expected PCR values in [policy.json](releases/policy.json) match the ones you rebuilt. The checker validates AWS's signature, compares the fingerprints, checks the result's signature, and recalculates the round.
+
+If all three agree, you have checked the connection from the published source to the enclave identified in that round's AWS proof, and from that enclave's signing key to the recorded game result. This relies on AWS's attestation system working as specified.
+
+You can try the last step with the included test proofs. Those prove something about the saved test rounds, not a new bet you make today. To check a new round, you need that round's Nitro proof. An ordinary bet-history export is not enough.
+
+[live-check.json](releases/live-check.json) is our dated report of what was running on AWS. Reading that report is not the same as checking an AWS-signed proof yourself.
+
+## Other files in this repository
 
 | Path | What's there |
 | --- | --- |
