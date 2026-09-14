@@ -18,7 +18,7 @@ The [player guide](PLAYERS.md) walks through the setup and explains the results.
 
 A pass means the revealed seed matches the fingerprint recorded before play, and using that seed produces the recorded result and payout.
 
-Nitro proofs go further: they include signed evidence from AWS about the code that produced the result. You'll need a separate Nitro proof file for that; a normal bet-history export doesn't contain it. Read [what Nitro checks](PLAYERS.md#what-is-nitro) or [how to verify a Nitro proof](DEVELOPERS.md#check-an-archived-nitro-proof).
+Nitro proofs go further: they include signed evidence from AWS about the code that produced the result. You'll need a separate Nitro proof file for that; a normal bet-history export doesn't contain it. Read [what Nitro checks](PLAYERS.md#what-is-nitro) or [how to verify a Nitro proof](DEVELOPERS.md#check-a-nitro-proof).
 
 Passing a check doesn't guarantee a win or a withdrawal.
 

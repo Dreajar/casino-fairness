@@ -94,7 +94,7 @@ There are two different checks here:
 - **Game history:** checks the revealed seed, result, and payout. This is the normal export described above.
 - **Nitro proof:** also checks AWS evidence and a signed result from that environment. It needs a different proof file and the approved release details.
 
-Your normal history export does not prove Nitro was used. For a Nitro proof file, follow the [Nitro section of the developer guide](DEVELOPERS.md#check-an-archived-nitro-proof).
+Your normal history export does not prove Nitro was used. For a Nitro proof file, follow the [Nitro section of the developer guide](DEVELOPERS.md#check-a-nitro-proof).
 
 A successful check concerns the recorded round. It does not guarantee future wins, service availability, or withdrawals.
 

@@ -1,74 +1,158 @@
-# For developers: verification and reproducible builds
+# Developer guide
 
 [Home](README.md) · [Player guide](PLAYERS.md)
 
-This guide covers the standalone CLIs, trust boundaries, published source, and reproducible builds. Node.js 24 or later is required. Running the bundled verifiers requires no npm install, AWS account, or casino login.
+This repository contains the checkers, the game calculations they use, and the code built into our AWS Nitro enclave. An enclave is the isolated environment where the game code runs.
 
-**Source available for noncommercial verification only. Commercial reuse is not permitted.** See [LICENSE](LICENSE). Third-party libraries retain their own licenses.
+To run a checker, install Node.js 24 or later and open a terminal in this folder. You don't need to install npm packages or log in to AWS. The checks run locally.
+
+## Pick the checker for your file
+
+| Your file | Run this |
+| --- | --- |
+| A normal **Export bet history** download | `verify-fairness.mjs` |
+| A game proof containing an AWS-signed document and signed game results | `verify-nitro.mjs` |
+| A proof downloaded from the separate Dice proof demo | `verify-dice-proof.mjs` |
+
+These files contain different information. Renaming one won't make it work with another checker.
 
 ## Check a game history
-
-Install Node.js 24 or later from https://nodejs.org. Open a terminal in this extracted folder:
 
 ```sh
 node verify-fairness.mjs "/path/to/fairness-history.json"
 ```
 
-On Windows you can also drag your JSON file onto `verify-history.cmd`.
+Before exporting, finish your round and click **Rotate & reveal** in the game's fairness panel. That puts the previous server seed in the export so the checker can use it.
 
-Each completed round needs its revealed server seed. Finish play, use **Rotate & reveal**, then export your history. A PASS checks the commitment, outcome, multiplier, and payout. This legacy history format uses two-decimal demo settlement; it is not a substitute for Nitro's signed eight-decimal settlement receipts. No round data is uploaded.
+For each round, the checker:
 
-## Check an archived Nitro proof
+1. Hashes the revealed seed and compares it with the hash recorded before play.
+2. Uses the seeds, round number, and recorded action to calculate the game again.
+3. Compares the result, multiplier, and payout with the exported values.
 
-```sh
-node verify-nitro.mjs "/path/to/nitro-proof.json" "releases/policy.json"
-```
+It prints `PASS` or `FAIL` for each check. `VERIFIED` means every included round passed. The program exits with code 0 on success and a nonzero code on failure.
 
-Use a policy from an independently trusted release. Never trust a policy merely because it arrived with a proof. This checks AWS attestation against pinned measurements, the signed receipt or complete progressive transcript, and game replay. It checks the archive at ticket issuance time, not whether a server is online or safe to accept new wagers now. A normal fairness-history export is not a Nitro proof.
+This checker uses the demo history's payout calculation, rounded to cents. Nitro receipts use a different calculation with eight decimal places. Use the Nitro checker for those receipts.
 
-The input is one object (or `{ "rounds": [...] }`) with the original `request`, attested `ticket`, play `command`, and completed `result` (or `first`). Progressive games require `completedHistory`, an ordered array of `{ "command": ..., "result": ... }` entries through completion. Proofs contain personal round references; share them only if you intend to.
+## Check a Nitro proof
 
-Try the 49 synthetic hardware-validation rounds included with this release:
+Start with the included example:
 
 ```sh
 node verify-nitro.mjs examples/nitro-49-games.json releases/policy.json
 ```
 
-The separate Dice demonstration format uses `verify-dice-proof.mjs` and its own trusted Dice release manifest. The all-game policy is not a Dice demonstration manifest.
+That file contains 49 test rounds, one for each supported game. They were played on AWS Nitro during testing. They are not customer bets. The checker should print a `PASS` for each game and finish with `VERIFIED: 49 archived Nitro round(s)` followed by a note about the check's limits.
 
-## What is published
+To check your own proof, replace the first filename:
 
-- Readable standalone verifiers requiring only Node, with no dependency install to run.
-- Exact source inputs and vendored dependencies under `source/`, plus third-party licenses.
-- Slot/game math, protocol documents, and a synthetic example under `examples/`.
-- The recorded all-game Nitro release policy, measurements, and build evidence.
-- The measured enclave bundle and build recipes, including its Rust attestation helper.
-- SHA-256 hashes in `SHA256SUMS.json` and source provenance in `build-recipes.json`.
+```sh
+node verify-nitro.mjs "/path/to/nitro-proof.json" releases/policy.json
+```
 
-The recorded release is not a statement that it is currently deployed. Consult the release's live-state report when available. AWS attestation establishes a measured execution environment; it does not establish solvency or guarantee withdrawals.
+### What is policy.json?
 
-The source is deliberately limited to verification and the enclave runtime. It contains no casino user interface, wallet credentials, private keys, customer database, or exported player histories. A KMS key identifier is part of the measured policy and is public metadata, not a key or credential.
+It tells the checker which software release to accept. It contains the release ID, allowed games, bet and payout limits, and the expected fingerprints of the enclave software. AWS calls those fingerprints **PCR0, PCR1, and PCR2**.
 
-## Reproduce the JavaScript bundles
+Use the `releases/policy.json` published here for the release that produced your proof. If someone sends you a proof with a different policy file, don't automatically use their file: they could change the expected fingerprints to make different software pass the check. Compare it with the file in the matching release of this repository.
+
+You still need to decide whether you trust the published code and release. You can inspect the source and rebuild it using the instructions below.
+
+### What does the checker do?
+
+It checks that:
+
+1. The AWS-signed document has a valid signature and certificate chain.
+2. The software fingerprints in that document match `policy.json`.
+3. The document ties the signing key to the record issued before this round.
+4. The game result was signed with that key and matches the recorded player actions.
+5. Running the game calculation again produces the recorded result and payout.
+
+The code calls the AWS-signed document an **attestation**, and the signed game result a **receipt**.
+
+This command checks a saved round using the time recorded when its ticket was issued. It doesn't contact the running server, check whether it's still online, or approve a new bet.
+
+### What must be in the proof file?
+
+For a game that finishes in one action, such as a slot spin, the JSON needs these fields:
+
+| Field | What it contains |
+| --- | --- |
+| `request` | The original request to prepare the round, including the game, wager, action, and random challenge sent for the AWS check. |
+| `ticket` | The record returned before play, including the seed hash, signing key, and AWS-signed document. |
+| `command` | The request that played the round, including the player seed. |
+| `result` | The signed result and revealed server seed. The example files call this field `first`; the checker accepts either name. |
+
+For games with several actions, such as blackjack, the checker needs the whole round: the opening action, each hit or stand, and the final result. Those steps belong in `completedHistory`, in order. Each entry contains its `command` and `result`. The checker rejects a round that hasn't finished.
+
+A file can contain one round directly, or several rounds inside a `rounds` array. See [the example file](examples/nitro-49-games.json) for complete, working records.
+
+Amounts ending in `Minor` are integers stored as strings. In these Nitro proofs, `"100000000"` means $1. Preserve those strings when reading or exporting a proof.
+
+**A normal bet-history export doesn't contain the AWS document or signed receipts.** Use the normal history checker for that file. Keep personal proof files private unless you want to share the player and round references they contain.
+
+## Check a Dice demo proof
+
+The separate Dice demo uses its own file format:
+
+```sh
+node verify-dice-proof.mjs "/path/to/dice-proof.json" --manifest "/path/to/approved-dice-release.json"
+```
+
+The manifest must come from the matching Dice demo release. `releases/policy.json` in this package is for the all-game Nitro checker and won't work here. A result marked `local mock` has not passed an AWS hardware check.
+
+## Find the source and build records
+
+| Path | What's there |
+| --- | --- |
+| `source/` | The verifier and game source, code used inside Nitro, and the library files needed to build it. |
+| `source/docs/` | Details of the seed calculations and proof formats. |
+| `enclave/game-service.mjs` | The built JavaScript program included in the recorded Nitro release. |
+| `releases/policy.json` | The release details the Nitro checker expects. |
+| `releases/build-evidence.json` | The recorded build settings, software fingerprints, and enclave image hash. |
+| `releases/live-check.json` | A dated check of the running AWS host. It is a report from us, not an AWS-signed proof. |
+| `build-recipes.json` | Source file hashes, build tool version, and settings used by `rebuild.mjs`. |
+| `SHA256SUMS.json` | File hashes for checking that your copy matches this download. |
+| `THIRD_PARTY_LICENSES/` | Licenses for the included libraries. |
+
+The KMS key identifier in the release records names an AWS key used by the system. It is not the key itself and doesn't grant access to it.
+
+## Build the JavaScript yourself
+
+This step needs npm to download the build tools:
 
 ```sh
 npm install --ignore-scripts
 node rebuild.mjs
 ```
 
-The pinned esbuild version uses the published source and import map. The script checks every source hash and requires byte-identical output. Rebuilding the JavaScript bundle is separate from rebuilding the complete enclave image.
+The script checks the source file hashes, builds the three verifiers and the enclave's JavaScript program, and compares the output with the published files. It prints `MATCH` for each file only if the bytes are identical. The rebuilt files go in `rebuilt/`.
 
-For the EIF, use a Linux x86-64 build host with Docker Buildx, Nitro CLI 1.5.0, jq, and the tools listed in `source/enclave/build-game-eif.sh`. After installing the build dependencies and running the rebuild above:
+This rebuild was checked for this release. It builds the JavaScript files; the complete Nitro image takes a separate step.
+
+## Build the Nitro image
+
+You'll need a Linux x86-64 machine with Docker Buildx, Nitro CLI 1.5.0, jq, and the other commands listed at the start of [build-game-eif.sh](source/enclave/build-game-eif.sh).
+
+After installing the build tools and running `node rebuild.mjs` above:
 
 ```sh
 cd source
 SOURCE_DATE_EPOCH=0 bash enclave/build-game-eif.sh ../releases/policy.json ../rebuilt-eif
 ```
 
-The original build used epoch 0, confirmed from the deployed container image. The published Dockerfile pins its base images and packages. The script requires two clean builds to agree. Rebuilding the EIF has not been performed by this package exporter. Compare PCR0/1/2 and EIF SHA-384 in `rebuilt-eif/release-evidence.json` to `releases/build-evidence.json`, and reject any mismatch.
+The output directory must not already exist. `SOURCE_DATE_EPOCH=0` is the timestamp setting used in the original build. The Dockerfile specifies exact base image and package versions so later updates don't silently change the build.
 
-The legacy verifier shares the published game engines. For an implementation independent of this code, use the protocol and fixed vectors, with the release's source as the exact reference when documentation and historical vectors differ.
+The script builds the image twice and checks that both copies match. The image file has an `.eif` extension. Compare PCR0, PCR1, PCR2, and the EIF's SHA-384 hash in `rebuilt-eif/release-evidence.json` with the values in `releases/build-evidence.json`. A difference means you haven't reproduced the published image.
 
-## Licensing
+The original release records include matching image builds. We also checked the running enclave's fingerprints and stored image hash on September 14, 2026. We did **not** rebuild the full image when preparing this public package.
 
-The Casino Fairness Verification License permits noncommercial inspection, local rebuilding, and checking this project's proofs. It does not grant permission to reuse the covered code in another product, operate a casino with it, or use it commercially. This is a source-available release, not an open-source release. Third-party code retains its own license under `THIRD_PARTY_LICENSES/`.
+## What these checks establish
+
+The history checker uses the same published game calculations as the server. Running it locally lets you check the exported result without asking the server to check itself. If you want to write a separate implementation, start with the source, the format descriptions in `source/docs/`, and the example inputs and outputs under `source/packages/`.
+
+A Nitro pass adds evidence that the signed round came from software with the expected fingerprints. Neither check guarantees future wins, service availability, or withdrawals.
+
+## License
+
+You may inspect, rebuild, and run the covered code for noncommercial verification. You may not reuse it commercially or use it to run another casino. See [LICENSE](LICENSE). Third-party libraries keep their own licenses.
