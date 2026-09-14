@@ -1,30 +1,27 @@
-# Check your game results
+# Casino fairness verifier
 
-This tool lets you check a downloaded game record on your own computer. It recalculates the round and checks whether the recorded result and payout match. Your file stays on your computer.
+Want to check a round you've played? Download your bet history and run it through this verifier. It works out the result again and compares it with what the game recorded.
 
-## Choose your guide
+The check runs on your computer. It doesn't send us your file.
 
-| For players | For developers and technical reviewers |
-| --- | --- |
-| **[Check my results →](PLAYERS.md)** | **[Inspect the code and proofs →](DEVELOPERS.md)** |
-| Plain-English steps, what PASS means, and help if something goes wrong. | Commands, proof formats, source code, Nitro checks, and rebuilding instructions. |
+## Give it a try
 
-## Start here
+1. Finish your round, open **Provably fair**, and click **Rotate & reveal**.
+2. Click **Export bet history** to save the file.
+3. [Download the verifier](https://github.com/Dreajar/casino-fairness/releases/latest) and extract the ZIP named `casino-fairness-v…` under **Assets**.
 
-1. In the game, finish a round, click **Provably fair**, then **Rotate & reveal**.
-2. Click **Export bet history**.
-3. Follow the **[player guide](PLAYERS.md)** to check that file.
+You'll need Node.js 24 or later installed. On Windows, you can then drag your history file onto `verify-history.cmd`.
 
-[Download the latest verifier package](https://github.com/Dreajar/casino-fairness/releases/latest). Under **Assets**, choose the ZIP whose name starts with `casino-fairness-v`, then extract it.
+The [player guide](PLAYERS.md) walks through the setup and explains the results. For the commands, proof formats, and build instructions, see the [developer guide](DEVELOPERS.md).
 
 ## What does a successful check mean?
 
-For a normal game-history file, it means the revealed seed matches the earlier commitment, and the recorded result and payout match the calculation.
+A pass means the revealed seed matches the fingerprint recorded before play, and using that seed produces the recorded result and payout.
 
-Some proof files also contain an AWS Nitro check. That checks evidence about the code that produced the result. **A normal history export does not include that check.** The [player guide](PLAYERS.md#what-is-nitro) explains the difference in plain English; the [developer guide](DEVELOPERS.md#check-an-archived-nitro-proof) covers the technical checks.
+Nitro proofs go further: they include signed evidence from AWS about the code that produced the result. You'll need a separate Nitro proof file for that; a normal bet-history export doesn't contain it. Read [what Nitro checks](PLAYERS.md#what-is-nitro) or [how to verify a Nitro proof](DEVELOPERS.md#check-an-archived-nitro-proof).
 
-These checks do not promise that you will win or guarantee withdrawals.
+Passing a check doesn't guarantee a win or a withdrawal.
 
-## Use of this code
+## Using the code
 
-You may inspect and use the covered code for noncommercial verification. Commercial reuse and using it in another casino are not permitted. See [LICENSE](LICENSE); third-party libraries keep their own licenses.
+We've made the code available so people can inspect it and check the proofs. Our [license](LICENSE) allows noncommercial verification, but doesn't allow commercial reuse or use in another casino. Third-party libraries keep their own licenses.
