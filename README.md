@@ -21,7 +21,7 @@ This tool lets you check a downloaded game record on your own computer. It recal
 
 For a normal game-history file, it means the revealed seed matches the earlier commitment, and the recorded result and payout match the calculation.
 
-Some proof files also contain an AWS Nitro check. That checks evidence about the code that produced the result. **A normal history export does not include that check.** The guides explain the difference.
+Some proof files also contain an AWS Nitro check. That checks evidence about the code that produced the result. **A normal history export does not include that check.** The [player guide](PLAYERS.md#what-is-nitro) explains the difference in plain English; the [developer guide](DEVELOPERS.md#check-an-archived-nitro-proof) covers the technical checks.
 
 These checks do not promise that you will win or guarantee withdrawals.
 
