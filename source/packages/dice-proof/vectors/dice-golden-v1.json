@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "replicate-dice-nitro-v1",
+  "description": "Independent fixed input/output vector for canonicalization and HMAC rejection sampling.",
+  "serverSeed": "0000000000000000000000000000000000000000000000000000000000000001",
+  "binding": {
+    "protocolVersion": "replicate-dice-nitro-v1",
+    "releaseId": "sha256:fixture-release",
+    "gameId": "dice",
+    "ticketId": "11111111111111111111111111111111",
+    "serverSeedHash": "ec4916dd28fc4c10d78e287ca5d9cc51ee1ae73cbfde08c6b37324cbfaac8bc5",
+    "publicKeySha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "sessionId": "fixture-session",
+    "sequence": 7,
+    "expiresAt": 1900000000000
+  },
+  "play": {
+    "requestId": "fixture-request",
+    "clientSeed": "3333333333333333333333333333333333333333333333333333333333333333",
+    "direction": "over",
+    "targetBasisPoints": 5050,
+    "wagerAtoms": "125"
+  },
+  "expected": {
+    "rollBasisPoints": 3124,
+    "won": false,
+    "multiplierMicros": "2000000",
+    "payoutAtoms": "0"
+  }
+}

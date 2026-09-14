@@ -1,0 +1,20 @@
+{
+  "name": "casino-fairness",
+  "version": "0.1.0",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "rebuild": "node rebuild.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "tsx": "4.23.12"
+  },
+  "overrides": {
+    "esbuild": "0.28.2"
+  }
+}

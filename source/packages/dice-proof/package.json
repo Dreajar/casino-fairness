@@ -1,0 +1,23 @@
+{
+  "name": "@replicate/dice-proof",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.mjs"
+    },
+    "./attestation": {
+      "types": "./src/attestation.d.ts",
+      "import": "./src/attestation.mjs"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@peculiar/x509": "2.0.0",
+    "reflect-metadata": "0.2.2"
+  }
+}

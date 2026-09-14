@@ -1,0 +1,237 @@
+[
+  {
+    "id": "synthetic-example",
+    "gameId": "gates-of-olympus-super-scatter",
+    "clientSeed": "public-example",
+    "nonce": 0,
+    "action": "spin",
+    "outcome": {
+      "kind": "gates-super-scatter",
+      "action": "spin",
+      "ante": false,
+      "boughtFeature": false,
+      "superFeature": false,
+      "columns": 6,
+      "rows": 5,
+      "initialGrid": [
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "red"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "purple"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "purple"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "scatter"
+        },
+        {
+          "symbol": "scatter"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "ring"
+        }
+      ],
+      "tumbles": [],
+      "finalGrid": [
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "red"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "purple"
+        },
+        {
+          "symbol": "ring"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "blue"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "purple"
+        },
+        {
+          "symbol": "yellow"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "chalice"
+        },
+        {
+          "symbol": "crown"
+        },
+        {
+          "symbol": "scatter"
+        },
+        {
+          "symbol": "scatter"
+        },
+        {
+          "symbol": "green"
+        },
+        {
+          "symbol": "hourglass"
+        },
+        {
+          "symbol": "ring"
+        }
+      ],
+      "rawWin": 0,
+      "multiplierSum": 0,
+      "baseGameWin": 0,
+      "regularScatterCount": 2,
+      "superScatterCount": 0,
+      "qualifyingScatterCount": 2,
+      "scatterAward": 0,
+      "superScatterAward": 0,
+      "bonusTriggered": false,
+      "bonus": {
+        "awardedSpins": 0,
+        "playedSpins": 0,
+        "finalMultiplier": 1,
+        "win": 0,
+        "spins": []
+      },
+      "rawTotal": 0,
+      "rtpCalibration": 1,
+      "uncappedTotal": 0,
+      "maxWinCap": 20,
+      "finalMultiplier": 0,
+      "payoutCalibration": {
+        "version": "slot-payout-20x-v3",
+        "preservedMathVersion": "slot-payout-calibration-v2",
+        "factor": 5.682545336788,
+        "cap": 20,
+        "effectiveMaximum": 20,
+        "finalMultiplier": 0
+      }
+    },
+    "multiplier": 0,
+    "wager": 1,
+    "payout": 0,
+    "serverSeedHash": "f8732b858c0f8e7306df1bc03663673b3c5f847154b6dc1434a69967fa0fe40b",
+    "revealedServerSeed": "public-fairness-example-not-a-live-seed"
+  }
+]

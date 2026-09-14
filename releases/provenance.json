@@ -1,0 +1,9 @@
+{
+  "releaseId": "casino-usd8-4adfc29b0272",
+  "measuredCommit": "4adfc29b027257365e804444727eb97fee477497",
+  "originalSourceArchiveSha256": "ed833f844f1d7461a76962547cd0018230f972765079135b7aeac5a3051833ac",
+  "liveDeploymentChecked": true,
+  "liveCheckedAt": "2026-09-14T20:44:43.382Z",
+  "enclaveBundleMatched": true,
+  "eifRebuiltByExporter": false
+}

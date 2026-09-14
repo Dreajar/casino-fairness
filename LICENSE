@@ -1,0 +1,46 @@
+Casino Fairness Verification License 1.0
+
+Copyright (c) 2026 the project copyright holders. All rights reserved.
+
+1. Scope
+
+This license applies only to material in this release for which the publisher
+holds the applicable copyright (the "Covered Material"). Third-party material
+is excluded and remains governed by its own licenses and notices, including
+those supplied in THIRD_PARTY_LICENSES. This is a source-available license,
+not an open-source license.
+
+2. Limited verification permission
+
+You may download, inspect, make local copies of, execute, and rebuild the
+Covered Material solely for noncommercial independent verification of game
+proofs, published calculations, and enclave measurements from this project.
+You may make local modifications solely to test or audit those claims. Keep
+copyright and license notices with these copies. You may publish verification
+results and security findings.
+
+3. Rights reserved
+
+No permission is granted to use the Covered Material commercially; to
+incorporate it into another product or service; to operate or supply a game,
+casino, gambling service, or competing verification service with it; or to
+sell, sublicense, or redistribute it or modified versions of it. These uses
+require separate written permission from the applicable copyright holders.
+
+This restriction concerns the Covered Material and does not claim ownership
+of mathematical facts, ideas, or methods independently of their copyrightable
+expression. No trademark rights are granted.
+
+4. Existing rights
+
+Nothing here limits rights independently granted by applicable law, by a
+third-party license, or by the hosting platform's terms concerning viewing
+and forking public repositories. Such platform rights do not grant additional
+permission for commercial reuse of the Covered Material.
+
+5. No warranty
+
+To the extent permitted by law, the Covered Material is provided "AS IS",
+without warranties of any kind, and the copyright holders are not liable for
+claims or damages arising from its use. Verification results do not guarantee
+future service availability or payment of funds.

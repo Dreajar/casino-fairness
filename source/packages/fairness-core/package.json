@@ -1,0 +1,22 @@
+{
+  "name": "@replicate/fairness-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "@replicate/contracts": "workspace:*",
+    "@replicate/dice-proof": "workspace:*",
+    "@replicate/game-registry": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "catalog:"
+  }
+}

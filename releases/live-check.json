@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-14T20:44:43.382Z",
+  "releaseId": "casino-usd8-4adfc29b0272",
+  "method": "Read-only AWS Systems Manager observation; not a public cryptographic attestation",
+  "state": "RUNNING",
+  "debugMode": false,
+  "pcrs": {
+    "HashAlgorithm": "Sha512_48 { .. }",
+    "PCR0": "2159174a6750579d5cc78f3dc058e69f6ff46433fd0e3a91f23bb58c9dd66a94381e1571ac98bc3a95ce9cbfe62a92e9",
+    "PCR1": "4b4d5b3661b3efc12920900c80e126e4ce783c522de6c02a2a5bf7af3a2b9327b86776f188e4be1c1c404a129dbda493",
+    "PCR2": "ae340e20619387f52287ca1b9e6029ecb56a50c816e7d796045b77d35e120c204aff295ad7a5df91c01639392c24d4b0"
+  },
+  "eifSha384": "50f4b8277047a1c17ac72b56b0ffa841bc681bc822747586729aeccc6a6b14c2c1f16eb4c7ff94503f78a8eb3b6ae9de",
+  "sourceDateEpoch": 0,
+  "archivedGamesVerified": 49
+}

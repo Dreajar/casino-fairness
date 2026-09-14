@@ -1,0 +1,45 @@
+{
+  "name": "@replicate/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm dev:clubs",
+    "demo:dev": "tsx watch src/main.ts",
+    "dev:clubs": "node --env-file=../../.env.local --import tsx --watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "db:migrate": "tsx src/commands/migrate.ts",
+    "db:migrate:clubs": "node --env-file=../../.env.local --import tsx src/commands/migrate.ts",
+    "fireblocks:check": "tsx src/commands/fireblocks-check.ts",
+    "fireblocks:bootstrap": "tsx src/commands/fireblocks-bootstrap.ts",
+    "club-payouts:run": "tsx src/commands/club-payouts-run.ts",
+    "club-payouts:reconcile": "tsx src/commands/club-payouts-reconcile.ts",
+    "settlement:close": "tsx src/commands/settlement-close.ts",
+    "analytics:rollup": "tsx src/commands/analytics-rollup.ts",
+    "local:seed": "node --env-file=../../.env.local --import tsx src/commands/local-seed.ts",
+    "game-edges:seed-sql": "tsx src/commands/seed-game-edges.ts"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "^11.2.0",
+    "@fireblocks/ts-sdk": "^27.0.0",
+    "@replicate/contracts": "workspace:*",
+    "@replicate/dice-proof": "workspace:*",
+    "@replicate/fairness-core": "workspace:*",
+    "@replicate/game-registry": "workspace:*",
+    "@rounder/operator-protocol": "workspace:*",
+    "@rounder/operator-sdk": "workspace:*",
+    "@sinclair/typebox": "^0.34.41",
+    "fastify": "^5.12.1",
+    "fastify-raw-body": "^6.0.1",
+    "jose": "^6.2.10",
+    "lossless-json": "^4.3.1",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.12",
+    "typescript": "catalog:"
+  }
+}

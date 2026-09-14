@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/dist
+!enclave/dist
+!enclave/dist/game-service.mjs
+!enclave/dist/game-build.json
+tmp
+**/coverage
+**/test-results
+**/playwright-report
+**/screenshots
+**/validation
+**/evidence
+**/cdk.out
+**/.env*
+enclave/*.eif
+*.log
